@@ -16,8 +16,13 @@ filename = re.findall(r'avvdat[^zip]*zip', resp.text)
  
 # remove duplicates
 filename = set(filename)
- 
+
+
 for file in filename:
+
+    # path to save
+    path_to_save = 'C:\\Users\\lwrobel\\Desktop\\Wirusy\\AVVDA\\' + file
+
     # check for duplicate (if file exsist just ignore)
     if os.path.isfile(file):
         print(f"{file} exsist!")
@@ -26,8 +31,8 @@ for file in filename:
     # download the zip
     new_url = 'http://update.nai.com/Products/commonupdater/' + file
     new_resp = rq.get(new_url)
- 
+
     # write zip to disk
-    with open(file, 'wb') as file:
+    with open(path_to_save, 'wb') as file:
         file.write(new_resp.content)
         print(f"Succesfully retrieved {file}!")
