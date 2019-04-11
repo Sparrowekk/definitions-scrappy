@@ -3,6 +3,9 @@
 import requests as rq
 import re
 import os.path
+from pathlib import Path
+
+
 
 # url with list of files
 url = 'http://downloadcenter.trendmicro.com/index.php?clk=tab_pattern&clkval=1&regs=NABU&lang_loc=1'
@@ -15,9 +18,13 @@ filename = re.findall(r'lpt[^zip]*zip', resp.text)
 
 # remove duplicates
 filename = set(filename)
-filepath = 'C:\\Users\\lwrobel\\Desktop\\Wirusy\\Trend'
+
 
 for file in filename:
+
+    # path to save
+    path_to_save = 'C:\\Users\\lwrobel\\Desktop\\Wirusy\\Trend\\' + file
+
     # check for duplicate (if file exsist just ignore)
     if os.path.isfile(file):
         print(f"{file} exsist!")
@@ -28,6 +35,7 @@ for file in filename:
     new_resp = rq.get(new_url)
 
     # write zip to disk
-    with open(filepath, 'wb') as file_obj:
-        file_obj.write(file)
-        print(f"Succesfully retrieved {file}!")
+    with open(path_to_save, 'wb') as file:
+        file.write(new_resp.content)
+        print(f"Succesfully retrieved {file}")
+
